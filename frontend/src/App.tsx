@@ -4,6 +4,7 @@ import { useTokenShop } from "./hooks/useTokenShop";
 import { ConnectWallet } from "./components/ConnectWallet";
 import { TokenInfo } from "./components/TokenInfo";
 import { BuyTokens } from "./components/BuyTokens";
+import { MintPanel } from "./components/MintPanel";
 import { AdminPanel } from "./components/AdminPanel";
 import { CopyAddress } from "./components/CopyAddress";
 import "./App.css";
@@ -20,6 +21,7 @@ function App() {
     totalSupply,
     ethPrice,
     tokenPriceUsd,
+    isMinter,
     isOwner,
     loading,
     txStatus,
@@ -121,7 +123,8 @@ function App() {
           {account ? (
             <>
               <BuyTokens loading={loading} txStatus={txStatus} shopAddress={shopAddress} tokenSymbol={tokenSymbol} onBuy={buyTokens} onEstimate={estimateTokens} />
-              {isOwner && <AdminPanel loading={loading} shopEthBalance={shopEthBalance} onWithdraw={withdraw} onMint={mint} />}
+              {isMinter && <MintPanel loading={loading} tokenSymbol={tokenSymbol} onMint={mint} />}
+              {isOwner && <AdminPanel loading={loading} shopEthBalance={shopEthBalance} onWithdraw={withdraw} />}
             </>
           ) : (
             <div className="card">

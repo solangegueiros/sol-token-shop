@@ -13,6 +13,7 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
   const [ethPrice, setEthPrice] = useState<string>("0");
   const [tokenPriceUsd, setTokenPriceUsd] = useState<string>("0");
   const [shopEthBalance, setShopEthBalance] = useState<string>("0");
+  const [isMinter, setIsMinter] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [loading, setLoading] = useState(false);
   const [txStatus, setTxStatus] = useState<string | null>(null);
@@ -53,6 +54,7 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
       if (account) {
         promises.push(contracts.token.balanceOf(account)); // [6]
         promises.push(contracts.shop.owner()); // [7]
+        promises.push(contracts.token.MINTER_ROLE()); // [8]
       }
 
       const results = await Promise.all(promises);
@@ -66,6 +68,9 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
       if (account) {
         setTokenBalance(formatUnits(results[6] as bigint, 2));
         setIsOwner((results[7] as string).toLowerCase() === account.toLowerCase());
+        const minterRole = results[8] as string;
+        const hasMinterRole = await contracts.token.hasRole(minterRole, account);
+        setIsMinter(hasMinterRole);
       }
     } catch (err) {
       console.error("Failed to fetch contract data:", err);
@@ -185,6 +190,7 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
     totalSupply,
     ethPrice,
     tokenPriceUsd,
+    isMinter,
     isOwner,
     loading,
     txStatus,
