@@ -11,7 +11,7 @@ export function TokenInfo({ tokenName, tokenSymbol, totalSupply, ethPrice, token
   return (
     <div className="card token-info">
       <h2>{tokenName ? `${tokenName}` : "Token Info"}</h2>
-      <div className="info-grid">
+      <div className="info-row">
         <div className="info-item">
           <span className="label">Total Supply</span>
           <span className="value">{totalSupply} {tokenSymbol || "TKN"}</span>

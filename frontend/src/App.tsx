@@ -15,6 +15,7 @@ function App() {
     tokenSymbol,
     tokenAddress,
     shopAddress,
+    shopEthBalance,
     tokenBalance,
     totalSupply,
     ethPrice,
@@ -115,7 +116,7 @@ function App() {
           {account ? (
             <>
               <BuyTokens loading={loading} txStatus={txStatus} shopAddress={shopAddress} onBuy={buyTokens} onEstimate={estimateTokens} />
-              {isOwner && <AdminPanel loading={loading} onWithdraw={withdraw} />}
+              {isOwner && <AdminPanel loading={loading} shopEthBalance={shopEthBalance} onWithdraw={withdraw} />}
             </>
           ) : (
             <div className="card">

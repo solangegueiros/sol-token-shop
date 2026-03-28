@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Contract, JsonRpcProvider, JsonRpcSigner, formatUnits, parseEther } from "ethers";
 import { TOKEN_ABI, TOKEN_SHOP_ABI, ADDRESSES } from "../contracts/abis";
-
-const SEPOLIA_RPC = import.meta.env.SEPOLIA_RPC || "https://ethereum-sepolia-rpc.publicnode.com";
+import { SEPOLIA_RPC } from "../config";
 
 export function useTokenShop(signer: JsonRpcSigner | null, account: string | null) {
   const [shopAddress, setShopAddress] = useState<string>(ADDRESSES.tokenShop);
@@ -13,6 +12,7 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
   const [totalSupply, setTotalSupply] = useState<string>("0");
   const [ethPrice, setEthPrice] = useState<string>("0");
   const [tokenPriceUsd, setTokenPriceUsd] = useState<string>("0");
+  const [shopEthBalance, setShopEthBalance] = useState<string>("0");
   const [isOwner, setIsOwner] = useState(false);
   const [loading, setLoading] = useState(false);
   const [txStatus, setTxStatus] = useState<string | null>(null);
@@ -48,9 +48,11 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
         contracts.token.name(),
         contracts.token.symbol(),
       ];
+      const provider = signer?.provider ?? publicProvider;
+      promises.push(provider.getBalance(shopAddress)); // [5]
       if (account) {
-        promises.push(contracts.token.balanceOf(account)); // [5]
-        promises.push(contracts.shop.owner()); // [6]
+        promises.push(contracts.token.balanceOf(account)); // [6]
+        promises.push(contracts.shop.owner()); // [7]
       }
 
       const results = await Promise.all(promises);
@@ -59,10 +61,11 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
       setTokenPriceUsd(formatUnits(results[2] as bigint, 2));
       setTokenName(results[3] as string);
       setTokenSymbol(results[4] as string);
+      setShopEthBalance(formatUnits(results[5] as bigint, 18));
 
       if (account) {
-        setTokenBalance(formatUnits(results[5] as bigint, 2));
-        setIsOwner((results[6] as string).toLowerCase() === account.toLowerCase());
+        setTokenBalance(formatUnits(results[6] as bigint, 2));
+        setIsOwner((results[7] as string).toLowerCase() === account.toLowerCase());
       }
     } catch (err) {
       console.error("Failed to fetch contract data:", err);
@@ -158,6 +161,7 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
     tokenSymbol,
     tokenAddress,
     shopAddress,
+    shopEthBalance,
     tokenBalance,
     totalSupply,
     ethPrice,

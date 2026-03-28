@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { SEPOLIA_CHAIN_ID } from "../contracts/abis";
+import { SEPOLIA_RPC, SEPOLIA_BLOCK_EXPLORER } from "../config";
 
 declare global {
   interface Window {
@@ -36,8 +37,8 @@ export function useWallet() {
               chainId: SEPOLIA_CHAIN_ID,
               chainName: "Sepolia Testnet",
               nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
-              rpcUrls: [import.meta.env.SEPOLIA_RPC || "https://ethereum-sepolia-rpc.publicnode.com"],
-              blockExplorerUrls: [import.meta.env.SEPOLIA_BLOCK_EXPLORER || "https://sepolia.etherscan.io"],
+              rpcUrls: [SEPOLIA_RPC],
+              blockExplorerUrls: [SEPOLIA_BLOCK_EXPLORER],
             },
           ],
         });

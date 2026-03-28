@@ -39,3 +39,10 @@ npm run dev
 3. Open
 
 [http://localhost:5173/](http://localhost:5173/)
+
+
+## Publish
+
+```cmd
+npm run build
+```

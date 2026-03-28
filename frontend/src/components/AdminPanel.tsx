@@ -1,13 +1,14 @@
 interface Props {
   loading: boolean;
+  shopEthBalance: string;
   onWithdraw: () => Promise<void>;
 }
 
-export function AdminPanel({ loading, onWithdraw }: Props) {
+export function AdminPanel({ loading, shopEthBalance, onWithdraw }: Props) {
   return (
     <div className="card admin-panel">
       <h2>Owner Panel</h2>
-      <p>Withdraw accumulated ETH from the TokenShop contract.</p>
+      <p>TokenShop balance: <strong>{shopEthBalance} ETH</strong></p>
       <button onClick={onWithdraw} disabled={loading} className="btn btn-secondary">
         {loading ? "Processing..." : "Withdraw ETH"}
       </button>
