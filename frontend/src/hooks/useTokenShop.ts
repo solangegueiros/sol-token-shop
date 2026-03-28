@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Contract, JsonRpcProvider, JsonRpcSigner, formatUnits, parseEther } from "ethers";
+import { Contract, JsonRpcProvider, JsonRpcSigner, formatUnits, parseEther, parseUnits } from "ethers";
 import { TOKEN_ABI, TOKEN_SHOP_ABI, ADDRESSES } from "../contracts/abis";
 import { SEPOLIA_RPC } from "../config";
 
@@ -156,6 +156,25 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
     }
   }, [getWriteContracts]);
 
+  const mint = useCallback(async (to: string, amount: string) => {
+    const contracts = getWriteContracts();
+    if (!contracts) return;
+
+    setLoading(true);
+    setTxStatus("Minting...");
+    try {
+      const tx = await contracts.token.mint(to, parseUnits(amount, 2));
+      setTxStatus("Waiting for confirmation...");
+      await tx.wait();
+      setTxStatus("Mint successful!");
+      await refresh();
+    } catch (err: unknown) {
+      setTxStatus(`Error: ${(err as Error).message}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [getWriteContracts, refresh]);
+
   return {
     tokenName,
     tokenSymbol,
@@ -172,6 +191,7 @@ export function useTokenShop(signer: JsonRpcSigner | null, account: string | nul
     buyTokens,
     estimateTokens,
     withdraw,
+    mint,
     updateShopAddress,
     refresh,
     configured: Boolean(tokenAddress && shopAddress),

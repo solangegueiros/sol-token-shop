@@ -26,6 +26,7 @@ function App() {
     buyTokens,
     estimateTokens,
     withdraw,
+    mint,
     updateShopAddress,
     configured,
   } = useTokenShop(signer, account);
@@ -56,11 +57,15 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <>
       <header>
-        <h1>Token Shop</h1>
-        <p className="subtitle">Buy tokens with ETH on Sepolia</p>
+        <img src="/icon.png" alt="Logo" className="header-logo" />
+        <div className="header-text">
+          <h1>Token Shop</h1>
+          <p className="subtitle">Buy tokens with ETH on Sepolia</p>
+        </div>
       </header>
+      <div className="app">
 
       {!configured && account && (
         <div className="card warning">
@@ -115,8 +120,8 @@ function App() {
           
           {account ? (
             <>
-              <BuyTokens loading={loading} txStatus={txStatus} shopAddress={shopAddress} onBuy={buyTokens} onEstimate={estimateTokens} />
-              {isOwner && <AdminPanel loading={loading} shopEthBalance={shopEthBalance} onWithdraw={withdraw} />}
+              <BuyTokens loading={loading} txStatus={txStatus} shopAddress={shopAddress} tokenSymbol={tokenSymbol} onBuy={buyTokens} onEstimate={estimateTokens} />
+              {isOwner && <AdminPanel loading={loading} shopEthBalance={shopEthBalance} onWithdraw={withdraw} onMint={mint} />}
             </>
           ) : (
             <div className="card">
@@ -126,7 +131,8 @@ function App() {
           <ConnectWallet account={account} connecting={connecting} error={error} onConnect={connect} />
         </main>
       )}
-    </div>
+      </div>
+    </>
   );
 }
 

@@ -5,11 +5,12 @@ interface Props {
   loading: boolean;
   txStatus: string | null;
   shopAddress: string;
+  tokenSymbol: string;
   onBuy: (ethAmount: string) => Promise<void>;
   onEstimate: (ethAmount: string) => Promise<string>;
 }
 
-export function BuyTokens({ loading, txStatus, shopAddress, onBuy, onEstimate }: Props) {
+export function BuyTokens({ loading, txStatus, shopAddress, tokenSymbol, onBuy, onEstimate }: Props) {
   const [ethAmount, setEthAmount] = useState("");
   const [estimated, setEstimated] = useState("0");
 
@@ -50,11 +51,11 @@ export function BuyTokens({ loading, txStatus, shopAddress, onBuy, onEstimate }:
         </div>
         {parseFloat(estimated) > 0 && (
           <p className="estimate">
-            You will receive approximately <strong>{estimated} TKN</strong>
+            You will receive approximately <strong>{estimated} {tokenSymbol || "TKN"}</strong>
           </p>
         )}
         <button type="submit" disabled={loading || !ethAmount || parseFloat(ethAmount) <= 0} className="btn btn-primary">
-          {loading ? "Processing..." : "Buy TKN"}
+          {loading ? "Processing..." : `Buy ${tokenSymbol || "TKN"}`}
         </button>
       </form>
       {txStatus && (

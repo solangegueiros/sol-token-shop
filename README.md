@@ -6,22 +6,24 @@ Would you like to know the upcoming events by Sol?
 
 Follow on [Sol's twitter](https://twitter.com/solangegueiros) 
 
-### Ethereum Sepolia
+### Ethereum Sepolia Example
 
 - [Token](https://eth-sepolia.blockscout.com/address/0x534d8463f615Ed4c59b6C2a3cB60d0c4Cb45cB3D)
 - [TokenShop](https://eth-sepolia.blockscout.com/address/0x7Df66cff401314B752C54FA2976409aB8aF0e8b9)
 
 
-## Fronend - Features
+## Frontend - Features
 
 Features
 - Wallet connection with automatic Sepolia network switching
-- Live token info - your TKN balance, current ETH/USD price from Chainlink, token price
-- Buy tokens - enter ETH amount, see estimated TKN before confirming
-- Owner panel - withdraw accumulated ETH (only visible to contract owner)
+- Live token info - total supply, current ETH/USD price from Chainlink, token price, your token balance
+- Buy tokens - enter ETH amount, see estimated token amount you can buy before confirming
+- Owner panel (only visible to contract owner)
+  - withdraw accumulated ETH
+  - mint tokens
 - Auto-refresh every 15 seconds
 
-## To run
+## Local Run
 
 1. Copy .env.example to .env and set your deployed contract addresses:
 
@@ -41,7 +43,7 @@ npm run dev
 [http://localhost:5173/](http://localhost:5173/)
 
 
-## Publish
+## Production - Publish
 
 ```cmd
 npm run build
