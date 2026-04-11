@@ -31,14 +31,27 @@ TOKEN_ADDRESS=0x...
 
 TOKEN_SHOP_ADDRESS=0x...
 
-2. Run
+
+2. First time - Install dependancies
 
 ```cmd
 cd frontend
+npm install
+```
+
+3. Run
+
+On frontend folder
+
+```cmd
+cd frontend
+```
+
+```cmd
 npm run dev
 ```
 
-3. Open
+4. Open
 
 [http://localhost:5173/](http://localhost:5173/)
 
